@@ -2,7 +2,9 @@ package com.istimeless.timecachecommon.model.key;
 
 import com.istimeless.timecachecommon.enums.ValueEnum;
 
-public class Key {
+import java.io.Serializable;
+
+public class Key implements Serializable {
 
     private String item;
 
