@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>timecache-core</module>
+        <module>timecache-common</module>
     </modules>
 
     <properties>
@@ -25,5 +26,20 @@
 
         <java.version>1.8</java.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.istimeless</groupId>
+                <artifactId>timecache-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.istimeless</groupId>
+                <artifactId>timecache-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

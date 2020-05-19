@@ -9,13 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>timecache-core</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>timecache-common</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.istimeless</groupId>
-            <artifactId>timecache-common</artifactId>
-        </dependency>
-    </dependencies>
+
 </project>
