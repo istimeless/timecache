@@ -10,5 +10,5 @@ public enum ValueEnum {
 
     SORT_SET,
 
-    HASH;
+    HASH
 }
