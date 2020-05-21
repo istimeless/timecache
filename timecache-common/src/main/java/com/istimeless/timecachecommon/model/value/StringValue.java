@@ -2,7 +2,7 @@ package com.istimeless.timecachecommon.model.value;
 
 import com.istimeless.timecachecommon.enums.ValueEnum;
 
-public class StringValue implements Value {
+public class StringValue extends Value {
 
     private static final ValueEnum valueEnum = ValueEnum.STRING;
 

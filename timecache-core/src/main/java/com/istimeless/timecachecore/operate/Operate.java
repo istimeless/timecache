@@ -1,22 +1,48 @@
 package com.istimeless.timecachecore.operate;
 
-import com.istimeless.timecachecommon.model.key.Key;
+import com.istimeless.timecachecommon.model.value.Value;
 import com.istimeless.timecachecore.container.Container;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public interface Operate {
+public class Operate {
 
-    default Set<Key> keys(String regex){
-        Set<Key> keys = Container.getContainer().keySet();
-        if (regex == null || regex.length() == 0) {
-            return keys;
-        }
-        return keys.stream().filter(key ->  key.getItem().matches(regex)).collect(Collectors.toSet());
+    static final ConcurrentHashMap<String, Value> container = Container.getContainer();
+
+    public Value put(String key, Value value) {
+        return container.put(key, value);
     }
 
-    default boolean hasKey(Key key) {
-        return Container.getContainer().containsKey(key);
+    public boolean putIfAbsent(String key, Value value) {
+        if (container.containsKey(key)) return false;
+        container.put(key, value);
+        return true;
+    }
+
+    public Value get(String key) {
+        return container.get(key);
+    }
+
+    public Set<String> keys(String regex){
+        Set<String> keys = container.keySet();
+        if (StringUtils.isBlank(regex)) {
+            return keys;
+        }
+        return keys.stream().filter(key ->  key.matches(regex)).collect(Collectors.toSet());
+    }
+
+    public boolean hasKey(String key) {
+        return container.containsKey(key);
+    }
+
+    public Value delete(String key) {
+        return container.remove(key);
+    }
+
+    public void expire(String key, long timeout) {
+        container.get(key).setTimeout(timeout);
     }
 }

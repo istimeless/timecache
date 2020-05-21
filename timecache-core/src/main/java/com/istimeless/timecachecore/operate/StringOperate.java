@@ -1,5 +1,6 @@
 package com.istimeless.timecachecore.operate;
 
-public class StringOperate implements Operate {
+public class StringOperate extends Operate {
+
 
 }

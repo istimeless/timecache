@@ -4,11 +4,11 @@ import com.istimeless.timecachecommon.enums.ValueEnum;
 
 import java.util.ArrayList;
 
-public class ListValue implements Value {
+public class ListValue extends Value {
 
     private static final ValueEnum valueEnum = ValueEnum.LIST;
 
-    private ArrayList<String> item;
+    private ArrayList<String> item = new ArrayList<>();
 
     public ArrayList<String> getItem() {
         return item;

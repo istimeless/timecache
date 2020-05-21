@@ -4,11 +4,11 @@ import com.istimeless.timecachecommon.enums.ValueEnum;
 
 import java.util.TreeSet;
 
-public class SortSetValue implements Value {
+public class SortSetValue extends Value {
 
     private static final ValueEnum valueEnum = ValueEnum.SORT_SET;
 
-    private TreeSet<String> item;
+    private TreeSet<String> item = new TreeSet<>();
 
     public TreeSet<String> getItem() {
         return item;

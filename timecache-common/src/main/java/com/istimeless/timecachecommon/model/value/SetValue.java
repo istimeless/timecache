@@ -4,11 +4,11 @@ import com.istimeless.timecachecommon.enums.ValueEnum;
 
 import java.util.HashSet;
 
-public class SetValue implements Value {
+public class SetValue extends Value {
 
     private static final ValueEnum valueEnum = ValueEnum.SET;
 
-    private HashSet<String> item;
+    private HashSet<String> item = new HashSet<>();
 
     public HashSet<String> getItem() {
         return item;

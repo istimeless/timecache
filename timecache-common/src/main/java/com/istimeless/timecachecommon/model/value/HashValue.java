@@ -4,11 +4,11 @@ import com.istimeless.timecachecommon.enums.ValueEnum;
 
 import java.util.HashMap;
 
-public class HashValue implements Value{
+public class HashValue extends Value{
 
     private static final ValueEnum valueEnum = ValueEnum.HASH;
 
-    private HashMap<String, String> item;
+    private HashMap<String, String> item = new HashMap<>();
 
     public HashMap<String, String> getItem() {
         return item;
