@@ -17,6 +17,10 @@
             <artifactId>timecache-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.istimeless</groupId>
+            <artifactId>timecache-command</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>

@@ -24,14 +24,16 @@ public class PropertiesManager {
                 throw new RuntimeException("can not find timecache.properties");
             }
             configPath = resource.getFile();
-            try {
-                properties.load(configPath);
-            } catch (ConfigurationException e) {
-                throw new RuntimeException("open timecache.properties failure");
-            }
         }
-        int port = properties.getInt("port");
-        timeCacheProperties.setPort(port);
+        try {
+            properties.load(configPath);
+            int port = properties.getInt("port", timeCacheProperties.getPort());
+            timeCacheProperties.setPort(port);
+            int maxConnections = properties.getInt("maxConnections", timeCacheProperties.getMaxConnections());
+            timeCacheProperties.setMaxConnections(maxConnections);
+        } catch (ConfigurationException e) {
+            throw new RuntimeException("open timecache.properties failure");
+        }
     }
 
     public static TimeCacheProperties getProperties() {

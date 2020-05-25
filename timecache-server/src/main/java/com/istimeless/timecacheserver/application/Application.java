@@ -4,20 +4,16 @@ import com.istimeless.timecachecommon.properties.PropertiesManager;
 import com.istimeless.timecachecommon.properties.TimeCacheProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class Application {
 
-    private int port = 6666;
-
-    private TimeCacheProperties properties;
+    private final TimeCacheProperties properties;
 
     public Application () {
         this.properties = PropertiesManager.getProperties();
-        this.port = properties.getPort();
     }
 
 
@@ -26,23 +22,23 @@ public class Application {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         NioEventLoopGroup workGroup = new NioEventLoopGroup();
         try {
+            System.out.println("server start...");
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
-
-                        }
-                    });
-
-            ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
+                    .option(ChannelOption.SO_BACKLOG, properties.getMaxConnections())
+                    .childHandler(new ApplicationChannelInitializer())
+                    .childOption(ChannelOption.SO_KEEPALIVE, true);
+            ChannelFuture channelFuture = serverBootstrap.bind(properties.getPort()).sync();
+            System.out.println("server start at port:" + properties.getPort());
             channelFuture.channel().closeFuture().sync();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
+            System.out.println("server shutdown...");
         }
     }
 

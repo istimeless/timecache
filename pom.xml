@@ -12,6 +12,8 @@
         <module>timecache-core</module>
         <module>timecache-common</module>
         <module>timecache-server</module>
+        <module>timecache-command</module>
+        <module>timecache-client</module>
     </modules>
 
     <properties>
@@ -38,6 +40,11 @@
             <dependency>
                 <groupId>com.istimeless</groupId>
                 <artifactId>timecache-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.istimeless</groupId>
+                <artifactId>timecache-command</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
