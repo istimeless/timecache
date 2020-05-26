@@ -1,6 +1,7 @@
 package com.istimeless.timecachecore.operate;
 
 import com.istimeless.timecachecommon.enums.ValueEnum;
+import com.istimeless.timecachecommon.exception.IllegalParamException;
 import com.istimeless.timecachecommon.model.value.HashValue;
 import com.istimeless.timecachecommon.model.value.Value;
 
@@ -31,7 +32,7 @@ public class HashOperate extends Operate {
 
     private void checkValueEnum(Value value) {
         if (!value.getValueEnum().equals(ValueEnum.HASH)) {
-            throw new RuntimeException("key的类型错误");
+            throw new IllegalParamException("the type of key is illegal");
         }
     }
 }

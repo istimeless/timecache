@@ -11,5 +11,10 @@
 
     <artifactId>timecache-command</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>com.istimeless</groupId>
+            <artifactId>timecache-core</artifactId>
+        </dependency>
+    </dependencies>
 </project>

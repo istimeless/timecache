@@ -1,25 +1,18 @@
 package com.istimeless.timecacheserver.application;
 
-import com.istimeless.timecachecommand.CommandHandler;
-import io.netty.buffer.ByteBuf;
+import com.istimeless.timecachecommand.command.CommandHandler;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.nio.charset.StandardCharsets;
 
-public class ApplicationChannelHandler extends ChannelInboundHandlerAdapter {
+public class ApplicationChannelHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf byteBuf = (ByteBuf) msg;
-        int length = byteBuf.readableBytes();
-        byte[] bytes = new byte[length];
-        byteBuf.getBytes(byteBuf.readerIndex(), bytes);
-        String command = new String(bytes, StandardCharsets.UTF_8);
-        System.out.println("receive command: " + command);
-        String result = CommandHandler.invokeCommand(command);
-        ctx.channel().writeAndFlush(Unpooled.copiedBuffer(result, StandardCharsets.UTF_8));
+    protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+        String result = CommandHandler.invokeCommand(msg);
+        ctx.channel().writeAndFlush(Unpooled.copiedBuffer(result + "\r\n", StandardCharsets.UTF_8));
     }
 
     @Override

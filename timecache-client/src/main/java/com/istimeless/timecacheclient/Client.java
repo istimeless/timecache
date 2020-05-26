@@ -5,6 +5,11 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
+import io.netty.util.CharsetUtil;
 
 import java.nio.charset.StandardCharsets;
 
@@ -24,17 +29,19 @@ public class Client {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
+                            pipeline.addLast(new DelimiterBasedFrameDecoder(4096, Delimiters.lineDelimiter()));
+                            pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
+                            pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
                             pipeline.addLast(new SimpleChannelInboundHandler<String>() {
                                 @Override
                                 protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
                                     System.out.println(msg);
-                                    ctx.channel().close();
                                 }
                             });
                         }
                     });
             ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 1234).sync();
-            channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer("hello", StandardCharsets.UTF_8));
+            channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer("&tc=string&tc=get&tc=testkey" + "\r\n", StandardCharsets.UTF_8));
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

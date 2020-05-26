@@ -14,10 +14,6 @@
     <dependencies>
         <dependency>
             <groupId>com.istimeless</groupId>
-            <artifactId>timecache-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.istimeless</groupId>
             <artifactId>timecache-command</artifactId>
         </dependency>
         <dependency>

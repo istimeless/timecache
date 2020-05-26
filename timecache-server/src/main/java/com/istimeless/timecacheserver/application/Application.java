@@ -7,6 +7,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 
 public class Application {
 
@@ -26,6 +28,7 @@ public class Application {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
+                    .handler(new LoggingHandler(LogLevel.DEBUG))
                     .option(ChannelOption.SO_BACKLOG, properties.getMaxConnections())
                     .childHandler(new ApplicationChannelInitializer())
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
