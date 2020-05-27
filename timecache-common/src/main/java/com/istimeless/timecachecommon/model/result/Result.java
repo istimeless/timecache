@@ -1,14 +1,12 @@
 package com.istimeless.timecachecommon.model.result;
 
-import com.istimeless.timecachecommon.model.value.Value;
-
-public class Result {
+public class Result<T> {
 
     private int code;
 
     private String msg;
 
-    private Value data;
+    private T data;
 
     public Result (int code) {
         this.code = code;
@@ -19,12 +17,12 @@ public class Result {
         this.msg = msg;
     }
 
-    public Result (int code, Value data) {
+    public Result (int code, T data) {
         this.code = code;
         this.data = data;
     }
 
-    public Result (int code, String msg, Value data) {
+    public Result (int code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -46,11 +44,11 @@ public class Result {
         this.msg = msg;
     }
 
-    public Value getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Value data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

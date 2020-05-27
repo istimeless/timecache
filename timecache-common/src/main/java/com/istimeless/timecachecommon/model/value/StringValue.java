@@ -8,11 +8,6 @@ public class StringValue extends Value {
 
     private String item;
 
-    public StringValue(String item) {
-        this.item = item;
-    }
-
-
     public String getItem() {
         return item;
     }

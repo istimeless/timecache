@@ -5,12 +5,13 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class Client {
@@ -29,7 +30,6 @@ public class Client {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new DelimiterBasedFrameDecoder(4096, Delimiters.lineDelimiter()));
                             pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
                             pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
                             pipeline.addLast(new SimpleChannelInboundHandler<String>() {
@@ -41,7 +41,18 @@ public class Client {
                         }
                     });
             ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 1234).sync();
-            channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer("&tc=string&tc=get&tc=testkey" + "\r\n", StandardCharsets.UTF_8));
+            new Thread(() -> {
+                while (true) {
+                    InputStreamReader is = new InputStreamReader(System.in);
+                    BufferedReader reader = new BufferedReader(is);
+                    try {
+                        String line = reader.readLine();
+                        channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(line, StandardCharsets.UTF_8));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

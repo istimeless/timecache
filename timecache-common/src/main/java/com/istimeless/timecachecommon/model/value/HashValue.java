@@ -10,14 +10,6 @@ public class HashValue extends Value{
 
     private HashMap<String, String> item = new HashMap<>();
 
-    public HashValue () {
-
-    }
-
-    public HashValue (HashMap<String, String> item) {
-        this.item = item;
-    }
-
     public HashMap<String, String> getItem() {
         return item;
     }

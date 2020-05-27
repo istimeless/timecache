@@ -1,5 +1,6 @@
 package com.istimeless.timecachecore.operate;
 
+import com.istimeless.timecachecommon.exception.IllegalParamException;
 import com.istimeless.timecachecommon.model.value.Value;
 import com.istimeless.timecachecore.container.Container;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +35,10 @@ public class Operate {
         return keys.stream().filter(key ->  key.matches(regex)).collect(Collectors.toSet());
     }
 
+    public Set<String> keys(){
+       return keys(null);
+    }
+
     public boolean hasKey(String key) {
         return container.containsKey(key);
     }
@@ -43,6 +48,10 @@ public class Operate {
     }
 
     public void expire(String key, long timeout) {
-        container.get(key).setTimeout(timeout);
+        Value value = container.get(key);
+        if (value == null) {
+            throw new IllegalParamException("key not exists");
+        }
+        value.setTimeout(timeout);
     }
 }

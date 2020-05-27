@@ -1,14 +1,8 @@
 package com.istimeless.timecachecommand.command;
 
-import com.istimeless.timecachecore.operate.Operate;
-
-import java.lang.reflect.Method;
+import com.istimeless.timecachecommand.mapper.Invoke;
 
 public interface CommandAnalysis {
 
-    Operate analysisOperate(String command);
-
-    Method analysisMethod(String command);
-
-    Object[] analysisParameter(String command, Operate operate, Method method);
+    Invoke analysisCommand(String command);
 }

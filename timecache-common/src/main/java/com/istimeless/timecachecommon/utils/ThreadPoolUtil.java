@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 
 public class ThreadPoolUtil {
 
-    private static ExecutorService executorService =
+    private static final ExecutorService executorService =
             new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
                     Runtime.getRuntime().availableProcessors() * 2,
                     10,
@@ -15,7 +15,7 @@ public class ThreadPoolUtil {
                     new ThreadFactoryBuilder().setNameFormat("timecache-thread-%s").build(),
                     new ThreadPoolExecutor.AbortPolicy());
 
-    private static ScheduledThreadPoolExecutor  scheduledExecutorService =
+    private static final ScheduledThreadPoolExecutor  scheduledExecutorService =
             new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors(),
                     new ThreadFactoryBuilder().setNameFormat("timecache-scheduled-thread-%s").build(),
                     new ThreadPoolExecutor.AbortPolicy());

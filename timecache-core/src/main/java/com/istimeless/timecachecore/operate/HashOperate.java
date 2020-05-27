@@ -20,6 +20,13 @@ public class HashOperate extends Operate {
         }
     }
 
+    public String get(String key, String hashKey) {
+        Value value = get(key);
+        checkValueEnum(value);
+        HashValue hashValue = (HashValue) value;
+        return hashValue.getItem().get(hashKey);
+    }
+
     public void delete(String key, String hashKey) {
         Value value = get(key);
         if (value != null) {
@@ -28,7 +35,6 @@ public class HashOperate extends Operate {
             hashValue.getItem().remove(hashKey);
         }
     }
-
 
     private void checkValueEnum(Value value) {
         if (!value.getValueEnum().equals(ValueEnum.HASH)) {

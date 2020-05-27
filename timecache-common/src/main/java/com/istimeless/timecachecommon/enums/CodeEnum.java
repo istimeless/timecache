@@ -6,9 +6,9 @@ public enum CodeEnum {
 
     FAILURE(0, "失败")
     ;
-    private int code;
+    private final int code;
 
-    private String msg;
+    private final String msg;
 
     public int getCode() {
         return code;
@@ -19,6 +19,7 @@ public enum CodeEnum {
     }
 
     CodeEnum (int code, String msg) {
-
+        this.code = code;
+        this.msg = msg;
     }
 }

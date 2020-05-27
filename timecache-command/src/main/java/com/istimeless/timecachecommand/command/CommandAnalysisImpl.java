@@ -1,23 +1,76 @@
 package com.istimeless.timecachecommand.command;
 
 import com.istimeless.timecachecommand.mapper.CommandMapper;
+import com.istimeless.timecachecommand.mapper.Invoke;
 import com.istimeless.timecachecommon.constant.CommonConstant;
 import com.istimeless.timecachecommon.exception.IllegalCommandException;
-import com.istimeless.timecachecommon.model.value.StringValue;
-import com.istimeless.timecachecommon.model.value.Value;
+import com.istimeless.timecachecommon.model.value.*;
 import com.istimeless.timecachecommon.utils.GsonUtil;
-import com.istimeless.timecachecore.operate.HashOperate;
-import com.istimeless.timecachecore.operate.Operate;
-import com.istimeless.timecachecore.operate.StringOperate;
+import com.istimeless.timecachecore.operate.*;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.Map;
 
 public class CommandAnalysisImpl implements CommandAnalysis{
 
     @Override
-    public Operate analysisOperate(String command) {
+    public Invoke analysisCommand(String command) {
+        Invoke invoke = new Invoke();
+        Operate operate = analysisOperate(command);
+        invoke.setOperate(operate);
+        String methodKey = getMethodKey(command);
+        String[] parameterStrings = getParameterStrings(command);
+        Method[] methods = operate.getClass().getMethods();
+        boolean findMethod = false;
+        for (Method method : methods) {
+            if (method.getName().equals(methodKey)) {
+                Class<?>[] parameterTypes = method.getParameterTypes();
+                if (parameterTypes.length == parameterStrings.length) {
+                    try {
+                        Object[] objects = new Object[parameterTypes.length];
+                        // try match parameter
+                        for (int i = 0; i < parameterTypes.length; i++) {
+                            String parameterString = parameterStrings[i];
+                            Class<?> parameterType = parameterTypes[i];
+                            parameterType = valueClass(operate, parameterType);
+                            Object object = GsonUtil.getGson().fromJson(parameterString, parameterType);
+                            objects[i] = object;
+                        }
+                        // parameter match success
+                        findMethod = true;
+                        invoke.setMethod(method);
+                        invoke.setParameters(objects);
+                        break;
+                    } catch (Exception e) {
+                        findMethod = false;
+                    }
+                }
+            }
+        }
+        if (!findMethod) {
+            throw new IllegalCommandException();
+        }
+        return invoke;
+    }
+
+    private Class<?> valueClass(Operate operate, Class<?> parameterType) {
+        if (parameterType == Value.class) {
+            if (operate instanceof StringOperate) {
+                parameterType = StringValue.class;
+            } else if (operate instanceof HashOperate) {
+                parameterType = HashValue.class;
+            } else if (operate instanceof ListOperate) {
+                parameterType = ListValue.class;
+            } else if (operate instanceof SetOperate) {
+                parameterType = SetValue.class;
+            } else if (operate instanceof SortSetOperate) {
+                parameterType = SortSetValue.class;
+            }
+        }
+        return parameterType;
+    }
+
+    private Operate analysisOperate(String command) {
         Map<String, Operate> operateMap = CommandMapper.operateMap();
         String operateKey = getOperateKey(command);
         Operate operate = operateMap.get(operateKey);
@@ -25,46 +78,6 @@ public class CommandAnalysisImpl implements CommandAnalysis{
             throw new IllegalCommandException();
         }
         return operate;
-    }
-
-    @Override
-    public Method analysisMethod(String command) {
-        Map<String, Method> methodMap = CommandMapper.methodMap();
-        String methodKey = getMethodKey(command);
-        Method method = methodMap.get(methodKey);
-        if (method == null) {
-            throw new IllegalCommandException();
-        }
-        return method;
-    }
-
-    @Override
-    public Object[] analysisParameter(String command, Operate operate, Method method) {
-        String[] parameterStrings = getParameterStrings(command);
-        Parameter[] parameters = method.getParameters();
-        if (parameterStrings.length == 0 && parameters.length == 0) {
-            return null;
-        }
-        if (parameterStrings.length != parameters.length) {
-            throw new IllegalCommandException();
-        }
-        Object[] objects = new Object[parameters.length];
-        for (int i = 0; i < parameters.length; i++) {
-            Parameter parameter = parameters[i];
-            String parameterString = parameterStrings[i];
-            Class<?> parameterType = parameter.getType();
-            if (parameterType == Value.class) {
-                if (operate instanceof StringOperate) {
-                    parameterType = StringValue.class;
-//                    objects[i] = new StringValue(parameterString);
-                } else if (operate instanceof HashOperate) {
-
-                }
-            }
-            Object object = GsonUtil.getGson().fromJson(parameterString, parameterType);
-            objects[i] = object;
-        }
-        return objects;
     }
 
     private String getOperateKey(String command) {
@@ -80,7 +93,7 @@ public class CommandAnalysisImpl implements CommandAnalysis{
         if (split.length < 3) {
             throw new IllegalCommandException();
         }
-        return split[1] + split[2];
+        return split[2];
     }
 
     private String[] getParameterStrings(String command) {
@@ -95,26 +108,4 @@ public class CommandAnalysisImpl implements CommandAnalysis{
         System.arraycopy(split, 3, parameter, 0, split.length - 3);
         return parameter;
     }
-
-//    private int getOperateIndex(String command) {
-//        String[] split = command.split(CommonConstant.COMMAND_SPLIT);
-//        if (split.length < 3) {
-//            throw new IllegalCommandException();
-//        }
-//        int operate = command.indexOf(CommonConstant.COMMAND_SPLIT);
-//        if (operate == -1) {
-//            throw new IllegalCommandException();
-//        }
-//        return operate;
-//    }
-//
-//    private int getMethodIndex(String command) {
-//        int operate = getOperateIndex(command);
-//        String methodCommand = command.substring(operate + 1);
-//        int method = methodCommand.indexOf(CommonConstant.COMMAND_SPLIT);
-//        if (method == -1) {
-//            throw new IllegalCommandException();
-//        }
-//        return method;
-//    }
 }
