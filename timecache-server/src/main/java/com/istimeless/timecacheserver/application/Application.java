@@ -30,6 +30,7 @@ public class Application {
     public void runs() {
         log.info("Starting TimeCache Server");
         long start = System.currentTimeMillis();
+        initServerStart();
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         NioEventLoopGroup workGroup = new NioEventLoopGroup();
         try {
@@ -42,7 +43,6 @@ public class Application {
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture channelFuture = serverBootstrap.bind(properties.getPort()).sync();
             log.info("TimeCache server started on port: {}", properties.getPort());
-            start();
             long end = System.currentTimeMillis();
             log.info("Started TimeCache server in {} seconds", (end - start) / 1000.0);
             channelFuture.channel().closeFuture().sync();
@@ -55,8 +55,10 @@ public class Application {
         }
     }
 
-    private void start() {
+    private void initServerStart() {
         //start count down
         Container.startCountDown();
+        Container.startRecover();
+        Container.startPersistence();
     }
 }

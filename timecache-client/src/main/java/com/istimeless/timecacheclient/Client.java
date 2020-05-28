@@ -40,7 +40,7 @@ public class Client {
                             });
                         }
                     });
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 1234).sync();
+            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 6666).sync();
             new Thread(() -> {
                 while (true) {
                     InputStreamReader is = new InputStreamReader(System.in);

@@ -27,13 +27,25 @@ public class PropertiesManager {
         }
         try {
             properties.load(configPath);
-            int port = properties.getInt("port", timeCacheProperties.getPort());
-            timeCacheProperties.setPort(port);
-            int maxConnections = properties.getInt("maxConnections", timeCacheProperties.getMaxConnections());
-            timeCacheProperties.setMaxConnections(maxConnections);
+            initProperties();
         } catch (ConfigurationException e) {
             throw new RuntimeException("open timecache.properties failure");
         }
+    }
+
+    private static void initProperties() {
+        int port = properties.getInt("port", timeCacheProperties.getPort());
+        timeCacheProperties.setPort(port);
+        int maxConnections = properties.getInt("maxConnections", timeCacheProperties.getMaxConnections());
+        timeCacheProperties.setMaxConnections(maxConnections);
+        boolean recover = properties.getBoolean("recover", timeCacheProperties.isRecover());
+        timeCacheProperties.setRecover(recover);
+        boolean persistence = properties.getBoolean("persistence", timeCacheProperties.isPersistence());
+        timeCacheProperties.setPersistence(persistence);
+        String persistencePath = properties.getString("persistence.path", timeCacheProperties.getPersistencePath());
+        timeCacheProperties.setPersistencePath(persistencePath);
+        long persistenceInterval = properties.getLong("persistence.interval", timeCacheProperties.getPersistenceInterval());
+        timeCacheProperties.setPersistenceInterval(persistenceInterval);
     }
 
     public static TimeCacheProperties getProperties() {
