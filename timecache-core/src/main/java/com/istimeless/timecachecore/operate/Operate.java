@@ -6,29 +6,26 @@ import com.istimeless.timecachecore.container.Container;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class Operate {
 
-    static final ConcurrentHashMap<String, Value> container = Container.getContainer();
-
     public Value put(String key, Value value) {
-        return container.put(key, value);
+        return Container.put(key, value);
     }
 
     public boolean putIfAbsent(String key, Value value) {
-        if (container.containsKey(key)) return false;
-        container.put(key, value);
+        if (Container.containsKey(key)) return false;
+        Container.put(key, value);
         return true;
     }
 
     public Value get(String key) {
-        return container.get(key);
+        return Container.get(key);
     }
 
     public Set<String> keys(String regex){
-        Set<String> keys = container.keySet();
+        Set<String> keys = Container.keySet();
         if (StringUtils.isBlank(regex)) {
             return keys;
         }
@@ -40,15 +37,15 @@ public class Operate {
     }
 
     public boolean hasKey(String key) {
-        return container.containsKey(key);
+        return Container.containsKey(key);
     }
 
     public Value delete(String key) {
-        return container.remove(key);
+        return Container.remove(key);
     }
 
     public void expire(String key, long timeout) {
-        Value value = container.get(key);
+        Value value = Container.get(key);
         if (value == null) {
             throw new IllegalParamException("key not exists");
         }

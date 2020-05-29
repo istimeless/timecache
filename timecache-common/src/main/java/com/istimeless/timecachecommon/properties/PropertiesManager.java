@@ -38,14 +38,20 @@ public class PropertiesManager {
         timeCacheProperties.setPort(port);
         int maxConnections = properties.getInt("maxConnections", timeCacheProperties.getMaxConnections());
         timeCacheProperties.setMaxConnections(maxConnections);
-        boolean recover = properties.getBoolean("recover", timeCacheProperties.isRecover());
-        timeCacheProperties.setRecover(recover);
-        boolean persistence = properties.getBoolean("persistence", timeCacheProperties.isPersistence());
-        timeCacheProperties.setPersistence(persistence);
-        String persistencePath = properties.getString("persistence.path", timeCacheProperties.getPersistencePath());
-        timeCacheProperties.setPersistencePath(persistencePath);
-        long persistenceInterval = properties.getLong("persistence.interval", timeCacheProperties.getPersistenceInterval());
-        timeCacheProperties.setPersistenceInterval(persistenceInterval);
+        boolean recoverTime = properties.getBoolean("recover.time", timeCacheProperties.isRecoverTime());
+        timeCacheProperties.setRecoverTime(recoverTime);
+        boolean persistenceTime = properties.getBoolean("persistence.time", timeCacheProperties.isPersistenceTime());
+        timeCacheProperties.setPersistenceTime(persistenceTime);
+        String persistenceTimePath = properties.getString("persistence.time.path", timeCacheProperties.getPersistenceTimePath());
+        timeCacheProperties.setPersistenceDataPath(persistenceTimePath);
+        long persistenceTimeInterval = properties.getLong("persistence.time.interval", timeCacheProperties.getPersistenceTimeInterval());
+        timeCacheProperties.setPersistenceTimeInterval(persistenceTimeInterval);
+        boolean recoverData = properties.getBoolean("recover.data", timeCacheProperties.isRecoverData());
+        timeCacheProperties.setRecoverData(recoverData);
+        boolean persistenceData = properties.getBoolean("persistence.data", timeCacheProperties.isPersistenceData());
+        timeCacheProperties.setPersistenceData(persistenceData);
+        String persistenceDataPath = properties.getString("persistence.data.path", timeCacheProperties.getPersistenceDataPath());
+        timeCacheProperties.setPersistenceDataPath(persistenceDataPath);
     }
 
     public static TimeCacheProperties getProperties() {

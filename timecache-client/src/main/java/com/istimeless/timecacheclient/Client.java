@@ -47,7 +47,12 @@ public class Client {
                     BufferedReader reader = new BufferedReader(is);
                     try {
                         String line = reader.readLine();
-                        channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(line, StandardCharsets.UTF_8));
+                        String[] split = line.split(" ");
+                        StringBuilder command = new StringBuilder();
+                        for (int i = 0; i < split.length; i++) {
+                            command.append("&tc=").append(split[i]);
+                        }
+                        channelFuture.channel().writeAndFlush(Unpooled.copiedBuffer(command.toString(), StandardCharsets.UTF_8));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

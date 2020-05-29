@@ -24,13 +24,13 @@ public class Application {
     }
 
     public static void run() {
-        new Application().runs();
+        new Application().runServer();
     }
 
-    public void runs() {
+    public void runServer() {
         log.info("Starting TimeCache Server");
         long start = System.currentTimeMillis();
-        initServerStart();
+        Container.init();
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         NioEventLoopGroup workGroup = new NioEventLoopGroup();
         try {
@@ -47,18 +47,11 @@ public class Application {
             log.info("Started TimeCache server in {} seconds", (end - start) / 1000.0);
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } finally {
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
             log.info("TimeCache server shutdown");
         }
-    }
-
-    private void initServerStart() {
-        //start count down
-        Container.startCountDown();
-        Container.startRecover();
-        Container.startPersistence();
     }
 }

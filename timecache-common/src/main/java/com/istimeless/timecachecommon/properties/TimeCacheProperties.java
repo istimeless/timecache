@@ -6,13 +6,19 @@ public class TimeCacheProperties {
 
     private int maxConnections = 128;
 
-    private boolean recover = true;
+    private boolean recoverTime = true;
 
-    private boolean persistence = true;
+    private boolean persistenceTime = true;
 
-    private String persistencePath = "./timecache.bak";
+    private String persistenceTimePath = "./timecache-time.data";
 
-    private long persistenceInterval = 1000 * 60 * 5L;
+    private long persistenceTimeInterval = 1000 * 60 * 5L;
+
+    private boolean recoverData = true;
+
+    private boolean persistenceData = true;
+
+    private String persistenceDataPath = "./timecache-data.data";
 
     public int getPort() {
         return port;
@@ -30,35 +36,59 @@ public class TimeCacheProperties {
         this.maxConnections = maxConnections;
     }
 
-    public boolean isRecover() {
-        return recover;
+    public boolean isRecoverTime() {
+        return recoverTime;
     }
 
-    public void setRecover(boolean recover) {
-        this.recover = recover;
+    public void setRecoverTime(boolean recoverTime) {
+        this.recoverTime = recoverTime;
     }
 
-    public boolean isPersistence() {
-        return persistence;
+    public boolean isPersistenceTime() {
+        return persistenceTime;
     }
 
-    public void setPersistence(boolean persistence) {
-        this.persistence = persistence;
+    public void setPersistenceTime(boolean persistenceTime) {
+        this.persistenceTime = persistenceTime;
     }
 
-    public String getPersistencePath() {
-        return persistencePath;
+    public String getPersistenceTimePath() {
+        return persistenceTimePath;
     }
 
-    public void setPersistencePath(String persistencePath) {
-        this.persistencePath = persistencePath;
+    public void setPersistenceTimePath(String persistenceTimePath) {
+        this.persistenceTimePath = persistenceTimePath;
     }
 
-    public long getPersistenceInterval() {
-        return persistenceInterval;
+    public long getPersistenceTimeInterval() {
+        return persistenceTimeInterval;
     }
 
-    public void setPersistenceInterval(long persistenceInterval) {
-        this.persistenceInterval = persistenceInterval;
+    public void setPersistenceTimeInterval(long persistenceTimeInterval) {
+        this.persistenceTimeInterval = persistenceTimeInterval;
+    }
+
+    public boolean isRecoverData() {
+        return recoverData;
+    }
+
+    public void setRecoverData(boolean recoverData) {
+        this.recoverData = recoverData;
+    }
+
+    public boolean isPersistenceData() {
+        return persistenceData;
+    }
+
+    public void setPersistenceData(boolean persistenceData) {
+        this.persistenceData = persistenceData;
+    }
+
+    public String getPersistenceDataPath() {
+        return persistenceDataPath;
+    }
+
+    public void setPersistenceDataPath(String persistenceDataPath) {
+        this.persistenceDataPath = persistenceDataPath;
     }
 }
