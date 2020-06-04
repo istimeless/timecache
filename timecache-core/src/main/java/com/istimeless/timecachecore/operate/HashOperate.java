@@ -4,6 +4,7 @@ import com.istimeless.timecachecommon.enums.ValueEnum;
 import com.istimeless.timecachecommon.exception.IllegalParamException;
 import com.istimeless.timecachecommon.model.value.HashValue;
 import com.istimeless.timecachecommon.model.value.Value;
+import org.apache.commons.lang3.StringUtils;
 
 public class HashOperate extends Operate {
 
@@ -18,6 +19,13 @@ public class HashOperate extends Operate {
             hashValue.getItem().put(hashKey, value);
             put(key, hashValue);
         }
+    }
+
+    public boolean putIfAbsent(String key, String hashKey, String value) {
+        String result = get(key, hashKey);
+        if (StringUtils.isNotBlank(result)) return false;
+        put(key, hashKey, value);
+        return true;
     }
 
     public String get(String key, String hashKey) {
