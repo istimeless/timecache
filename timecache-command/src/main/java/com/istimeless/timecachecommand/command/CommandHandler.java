@@ -27,6 +27,7 @@ public class CommandHandler {
             Object object = method.invoke(operate, objects);
             result.setCode(CodeEnum.SUCCESS.getCode());
             result.setData(object);
+            result.setId(invoke.getId());
         } catch (InvocationTargetException e) {
             //method exception
             result.setMsg(e.getTargetException().getMessage());

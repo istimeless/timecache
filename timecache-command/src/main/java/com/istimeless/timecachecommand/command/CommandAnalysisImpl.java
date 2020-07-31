@@ -16,6 +16,8 @@ public class CommandAnalysisImpl implements CommandAnalysis{
     @Override
     public Invoke analysisCommand(String command) {
         Invoke invoke = new Invoke();
+        String id = getId(command);
+        invoke.setId(id);
         Operate operate = analysisOperate(command);
         invoke.setOperate(operate);
         String methodKey = getMethodKey(command);
@@ -70,6 +72,14 @@ public class CommandAnalysisImpl implements CommandAnalysis{
         return parameterType;
     }
 
+    private String getId(String command) {
+        String[] split = command.split(CommonConstant.COMMAND_SPLIT);
+        if (split.length < 4) {
+            throw new IllegalCommandException();
+        }
+        return split[1];
+    }
+
     private Operate analysisOperate(String command) {
         Map<String, Operate> operateMap = CommandMapper.operateMap();
         String operateKey = getOperateKey(command);
@@ -82,30 +92,30 @@ public class CommandAnalysisImpl implements CommandAnalysis{
 
     private String getOperateKey(String command) {
         String[] split = command.split(CommonConstant.COMMAND_SPLIT);
-        if (split.length < 3) {
-            throw new IllegalCommandException();
-        }
-        return split[1];
-    }
-
-    private String getMethodKey(String command) {
-        String[] split = command.split(CommonConstant.COMMAND_SPLIT);
-        if (split.length < 3) {
+        if (split.length < 4) {
             throw new IllegalCommandException();
         }
         return split[2];
     }
 
-    private String[] getParameterStrings(String command) {
+    private String getMethodKey(String command) {
         String[] split = command.split(CommonConstant.COMMAND_SPLIT);
-        if (split.length < 3) {
+        if (split.length < 4) {
             throw new IllegalCommandException();
         }
-        if (split.length == 3) {
+        return split[3];
+    }
+
+    private String[] getParameterStrings(String command) {
+        String[] split = command.split(CommonConstant.COMMAND_SPLIT);
+        if (split.length < 4) {
+            throw new IllegalCommandException();
+        }
+        if (split.length == 4) {
             return new String[0];
         }
-        String[] parameter = new String[split.length - 3];
-        System.arraycopy(split, 3, parameter, 0, split.length - 3);
+        String[] parameter = new String[split.length - 4];
+        System.arraycopy(split, 4, parameter, 0, split.length - 4);
         return parameter;
     }
 }

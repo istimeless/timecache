@@ -28,7 +28,7 @@ public class Application {
     }
 
     public void runServer() {
-        log.info("Starting TimeCache Server");
+        log.info("Starting TimeCache server");
         long start = System.currentTimeMillis();
         Container.init();
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();

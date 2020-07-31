@@ -4,6 +4,8 @@ public class Result<T> {
 
     private int code;
 
+    private String id;
+
     private String msg;
 
     private T data;
@@ -12,20 +14,36 @@ public class Result<T> {
         this.code = code;
     }
 
-    public Result (int code, String msg) {
+    public Result (int code, String id) {
         this.code = code;
+        this.id = id;
+    }
+
+    public Result (int code, String id, String msg) {
+        this.code = code;
+        this.id = id;
         this.msg = msg;
     }
 
-    public Result (int code, T data) {
+    public Result (int code, String id, T data) {
         this.code = code;
+        this.id = id;
         this.data = data;
     }
 
-    public Result (int code, String msg, T data) {
+    public Result (int code, String id, String msg, T data) {
         this.code = code;
+        this.id = id;
         this.msg = msg;
         this.data = data;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getCode() {

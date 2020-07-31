@@ -6,11 +6,21 @@ import java.lang.reflect.Method;
 
 public class Invoke {
 
+    private String id;
+
     private Operate operate;
 
     private Method method;
 
     private Object[] parameters;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Operate getOperate() {
         return operate;

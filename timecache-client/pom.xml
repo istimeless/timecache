@@ -13,6 +13,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.istimeless</groupId>
+            <artifactId>timecache-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>
@@ -32,7 +36,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.istimeless.timecacheclient.Client</mainClass>
+                                    <mainClass>com.istimeless.timecacheclient.TimeCacheClient</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
